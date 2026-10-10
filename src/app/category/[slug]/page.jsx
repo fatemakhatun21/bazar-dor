@@ -5,7 +5,7 @@ import { use, useEffect, useState } from "react";
 import Link from "next/link";
 import ProductCard from "../../components/ProductCard";
 
-const API = "https://api.abcz.workers.dev/api/bazardor";
+const API = "https://openapi.programming-hero.com/api/bazardor";
 
 export default function CategoryPage({ params }) {
     const { slug } = use(params);

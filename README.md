@@ -42,7 +42,7 @@ BazarDor supports:
 
 BazarDor uses the following external API:
 
-https://api.abcz.workers.dev/api/bazardor
+https://openapi.programming-hero.com/api/bazardor
 
 ## 💻 Run Locally
 
@@ -102,4 +102,3 @@ Live URL: Add your Vercel deployment link here.
 ## 👩‍💻 Developer
 
 Developed as a Next.js assignment project.
-F

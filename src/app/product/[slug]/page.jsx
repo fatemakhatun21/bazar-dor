@@ -7,7 +7,7 @@ import { useSession } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 
-const API = "https://api.abcz.workers.dev/api/bazardor";
+const API = "https://openapi.programming-hero.com/api/bazardor";
 
 const units = {
     kg: "কেজি",
