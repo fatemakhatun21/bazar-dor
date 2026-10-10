@@ -18,6 +18,17 @@ const categoryNames = {
   mosla: "মসলা",
 };
 
+const categoryIcons = {
+  chal: "🍚",
+  dal: "🫘",
+  tel: "🛢️",
+  sobji: "🥬",
+  mach: "🐟",
+  mangsho: "🍗",
+  dimDudh: "🥛",
+  mosla: "🌶️",
+};
+
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [categories, setCategories] = useState([]);
@@ -41,7 +52,7 @@ export default function Navbar() {
     async function getCategories() {
       try {
         const response = await fetch(
-          "https://api.api-store.workers.dev/api/bazardor/categories"
+          "https://api.abcz.workers.dev/api/bazardor/categories"
         );
 
         if (!response.ok) {
@@ -95,7 +106,10 @@ export default function Navbar() {
                 : "text-gray-600 hover:bg-green-50 hover:text-green-700"
                 }`}
             >
-              {name}
+              <span className="flex items-center gap-2">
+                <span>{categoryIcons[slug]}</span>
+                <span>{name}</span>
+              </span>
             </Link>
           </li>
         );
@@ -222,7 +236,7 @@ export default function Navbar() {
       </header>
 
       <div className="hidden border-t border-gray-100 md:block">
-        <ul className="mx-auto flex max-w-6xl flex-wrap items-center justify-center gap-x-8 gap-y-3 px-4 py-4">
+        <ul className="mx-auto flex max-w-6xl flex-wrap items-center justify-start gap-x-1 gap-y-2 px-4 py-3 sm:px-6">
           {links}
         </ul>
       </div>

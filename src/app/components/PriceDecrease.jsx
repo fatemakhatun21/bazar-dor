@@ -43,13 +43,9 @@ export default function PriceDecrease() {
     return (
         <section className="mx-auto max-w-6xl px-6 py-12">
             <h2 className="text-2xl font-bold text-gray-900">
-                আজ দাম কমেছে ▼
+                <span className="mr-2 text-green-600">▼</span>
+                আজ দাম কমেছে
             </h2>
-
-            <p className="mt-2 text-gray-600">
-                আজ যেসব পণ্যের দাম সবচেয়ে বেশি কমেছে
-            </p>
-
             <div className="mt-6 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
                 {products.map((product) => (
                     <ProductCard key={product.id} product={product} />
