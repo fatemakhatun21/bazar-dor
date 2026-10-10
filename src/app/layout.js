@@ -1,4 +1,5 @@
 import { setServers } from "node:dns/promises";
+import { Toaster } from "react-hot-toast";
 
 setServers(["1.1.1.1", "8.8.8.8"]);
 import { Geist, Geist_Mono } from "next/font/google";
@@ -28,7 +29,8 @@ export default function RootLayout({ children }) {
     >
       <body className="min-h-full flex flex-col">
         <Navbar></Navbar>
-        <main>
+        <Toaster position="top-right" />
+        <main className="flex-1">
           {children}
         </main>
       </body>

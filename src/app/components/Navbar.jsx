@@ -91,8 +91,8 @@ export default function Navbar() {
               href={`/category/${slug}`}
               onClick={() => setIsMenuOpen(false)}
               className={`rounded-lg px-3 py-2 text-sm transition-colors ${isActive
-                  ? "bg-green-700 font-semibold text-white"
-                  : "text-gray-600 hover:bg-green-50 hover:text-green-700"
+                ? "bg-green-700 font-semibold text-white"
+                : "text-gray-600 hover:bg-green-50 hover:text-green-700"
                 }`}
             >
               {name}
@@ -138,15 +138,13 @@ export default function Navbar() {
             সাইন ইন
           </Link>
 
-          <Button
-            as={Link}
+          <Link
             href="/sign-up"
-            size="sm"
-            className="bg-green-700 text-white"
-            onPress={() => setIsMenuOpen(false)}
+            className="inline-flex items-center justify-center rounded-lg bg-green-700 px-4 py-2 text-sm font-medium text-white hover:bg-green-800"
+            onClick={() => setIsMenuOpen(false)}
           >
             সাইন আপ
-          </Button>
+          </Link>
         </>
       )}
     </>
