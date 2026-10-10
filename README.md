@@ -1,36 +1,105 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
-## Getting Started
+# 🛒 BazarDor — বাজার দর
 
-First, run the development server:
+BazarDor is a responsive Bengali market price tracking web application built with Next.js. Users can explore daily prices of essential products, compare prices across markets, and track price increases or decreases.
+
+## 🚀 Features
+
+1. **Daily Market Prices** — Browse updated prices of essential products.
+2. **Dynamic Categories** — Explore products by category, including rice, lentils, oil, vegetables, fish, meat, dairy, and spices.
+3. **Price Increase & Decrease** — View products with rising and falling prices.
+4. **Product Details** — View minimum, maximum, average, and market-wise prices.
+5. **Product Sorting** — Sort products by price in ascending or descending order.
+6. **Authentication** — Sign up and sign in using email/password, Google, or GitHub.
+7. **Protected Routes** — Product details require authentication.
+8. **User Profile** — View account information and update the user's name.
+9. **Live Price Ticker** — Scrolling display of product prices and percentage changes.
+10. **Responsive Design** — Supports mobile, tablet, and desktop screens.
+11. **Error Handling** — Includes loading skeletons, error messages, and a custom 404 page.
+
+## 🛠️ Technologies Used
+
+- Next.js (App Router)
+- React
+- Tailwind CSS
+- HeroUI
+- DaisyUI
+- BetterAuth
+- MongoDB
+- React Hot Toast
+- Vercel (deployment platform)
+
+## 🔐 Authentication
+
+BazarDor supports:
+
+- Email and password authentication
+- Google OAuth
+- GitHub OAuth
+- User profile management
+
+## 🌐 API
+
+BazarDor uses the following external API:
+
+https://api.abcz.workers.dev/api/bazardor
+
+## 💻 Run Locally
+
+### 1. Clone the repository
+
+```bash
+git clone YOUR_REPOSITORY_URL
+cd YOUR_PROJECT_FOLDER
+```
+
+### 2. Install dependencies
+
+```bash
+npm install
+```
+
+### 3. Configure environment variables
+
+Create a `.env.local` file and configure the required variables:
+
+```env
+BETTER_AUTH_SECRET=
+BETTER_AUTH_URL=http://localhost:3000
+BETTER_AUTH_DB_URL=
+
+GOOGLE_CLIENT_ID=
+GOOGLE_CLIENT_SECRET=
+
+GITHUB_CLIENT_ID=
+GITHUB_CLIENT_SECRET=
+```
+
+Never commit environment files containing real credentials.
+
+### 4. Start the development server
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open http://localhost:3000 in your browser.
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+## 📄 Pages
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- `/` — Home
+- `/category/[slug]` — Category Products
+- `/product/[slug]` — Protected Product Details
+- `/sign-in` — Sign In
+- `/sign-up` — Sign Up
+- `/profile` — User Profile
+- Custom 404 Page
 
-## Learn More
+## 🔗 Live Website
 
-To learn more about Next.js, take a look at the following resources:
+Live URL: Add your Vercel deployment link here.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 👩‍💻 Developer
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Developed as a Next.js assignment project.
+F
