@@ -1,29 +1,29 @@
-
 "use client";
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
 import { authClient, useSession } from "@/lib/auth-client";
 import toast from "react-hot-toast";
 
 export default function UpdateProfilePage() {
     const router = useRouter();
-    const { data: session, isPending } = useSession();
+    const { data: session, isPending, refetch } = useSession();
 
+    const user = session?.user;
     const [name, setName] = useState("");
     const [saving, setSaving] = useState(false);
 
     useEffect(() => {
-        if (isPending) return;
-
-        if (!session?.user) {
+        if (!isPending && !user) {
             router.replace("/sign-in");
-            return;
         }
+    }, [isPending, user, router]);
 
-        setName(session.user.name || "");
-    }, [isPending, session?.user?.id, session?.user?.name, router]);
+    useEffect(() => {
+        if (user?.name) {
+            setName(user.name);
+        }
+    }, [user?.name]);
 
     async function handleUpdate(e) {
         e.preventDefault();
@@ -31,7 +31,12 @@ export default function UpdateProfilePage() {
         const updatedName = name.trim();
 
         if (!updatedName) {
-            toast.error("নাম লিখুন");
+            toast.error("আপনার নাম লিখুন");
+            return;
+        }
+
+        if (updatedName === user?.name) {
+            toast.error("নাম পরিবর্তন করা হয়নি");
             return;
         }
 
@@ -43,91 +48,82 @@ export default function UpdateProfilePage() {
             });
 
             if (error) {
-                toast.error(error.message || "নাম পরিবর্তন করা যায়নি");
+                toast.error(error.message || "নাম আপডেট করা যায়নি");
                 return;
             }
 
-            toast.success("প্রোফাইল সফলভাবে আপডেট হয়েছে");
+            await refetch();
+            toast.success("নাম সফলভাবে আপডেট হয়েছে");
             router.push("/profile");
             router.refresh();
-        } catch {
+        } catch (error) {
+            console.error(error);
             toast.error("কিছু একটা সমস্যা হয়েছে");
         } finally {
             setSaving(false);
         }
     }
 
-    if (isPending || !session?.user) {
+    if (isPending || !user) {
         return (
-            <div className="mx-auto max-w-xl px-4 py-16">
-                <div className="skeleton h-80 rounded-2xl" />
-            </div>
+            <section className="min-h-screen bg-[#f2f7f3] px-4 py-10">
+                <div className="mx-auto max-w-2xl space-y-5">
+                    <div className="skeleton h-14 w-64" />
+                    <div className="skeleton h-52 rounded-2xl" />
+                </div>
+            </section>
         );
     }
 
     return (
-        <section className="min-h-screen bg-[#f2f7f3] px-4 py-12">
-            <div className="mx-auto max-w-xl">
-                <div className="card border border-gray-200 bg-white shadow-sm">
-                    <div className="card-body">
-                        <h1 className="text-2xl font-bold text-gray-900">
-                            প্রোফাইল আপডেট করুন
-                        </h1>
+        <section className="min-h-screen bg-[#f2f7f3] px-4 py-10 sm:px-6">
+            <div className="mx-auto max-w-2xl">
+                <h1 className="mb-6 text-2xl font-bold text-[#24342A]">
+                    প্রোফাইল আপডেট
+                </h1>
 
-                        <p className="text-sm text-gray-500">
-                            এখানে আপনার নাম পরিবর্তন করতে পারবেন।
-                        </p>
+                <div className="rounded-2xl border border-gray-200 bg-white p-5 sm:p-6">
+                    <h2 className="mb-6 text-lg font-bold text-[#24342A]">
+                        তথ্য পরিবর্তন করুন
+                    </h2>
 
-                        <form onSubmit={handleUpdate} className="mt-6 space-y-5">
-                            <div>
-                                <label
-                                    htmlFor="name"
-                                    className="mb-2 block font-medium text-gray-900"
-                                >
-                                    পূর্ণ নাম
-                                </label>
-
-                                <input
-                                    id="name"
-                                    type="text"
-                                    value={name}
-                                    onChange={(e) => setName(e.target.value)}
-                                    required
-                                    maxLength={100}
-                                    className="input w-full border border-gray-300 bg-white text-gray-900"
-                                    placeholder="আপনার নাম লিখুন"
-                                />
-                            </div>
-
-                            <div>
-                                <label className="mb-2 block font-medium text-gray-900">
-                                    ইমেইল
-                                </label>
-
-                                <input
-                                    type="email"
-                                    value={session.user.email}
-                                    disabled
-                                    className="input w-full border border-gray-300 bg-gray-100 text-gray-500"
-                                />
-                            </div>
-
-                            <button
-                                type="submit"
-                                disabled={saving}
-                                className="btn btn-success w-full text-white"
+                    <form onSubmit={handleUpdate} className="space-y-4">
+                        <div>
+                            <label
+                                htmlFor="profile-name"
+                                className="mb-2 block text-sm font-medium text-gray-700"
                             >
-                                {saving ? "আপডেট হচ্ছে..." : "পরিবর্তন সংরক্ষণ করুন"}
-                            </button>
+                                নাম
+                            </label>
 
-                            <Link
-                                href="/profile"
-                                className="btn btn-ghost w-full"
-                            >
-                                বাতিল করুন
-                            </Link>
-                        </form>
-                    </div>
+                            <input
+                                id="profile-name"
+                                type="text"
+                                value={name}
+                                onChange={(e) => setName(e.target.value)}
+                                maxLength={100}
+                                required
+                                placeholder="আপনার নাম লিখুন"
+                                className="h-11 w-full rounded-lg border border-gray-200 bg-white px-4 text-sm text-gray-900 outline-none transition focus:border-green-600 focus:ring-2 focus:ring-green-100"
+                            />
+                        </div>
+
+                        <button
+                            type="submit"
+                            disabled={saving}
+                            className="w-full rounded-lg bg-green-700 px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-green-800 disabled:opacity-50"
+                        >
+                            {saving ? "আপডেট হচ্ছে..." : "তথ্য আপডেট করুন"}
+                        </button>
+                    </form>
+
+                    <button
+                        type="button"
+                        onClick={() => router.push("/profile")}
+                        className="mt-4 w-full rounded-lg border border-gray-200 px-5 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50"
+                    >
+                        ← প্রোফাইলে ফিরে যান 
+                    </button>
                 </div>
             </div>
         </section>

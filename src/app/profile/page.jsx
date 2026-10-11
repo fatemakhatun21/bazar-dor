@@ -3,15 +3,13 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { authClient, signOut, useSession } from "@/lib/auth-client";
+import { signOut, useSession } from "@/lib/auth-client";
 import toast from "react-hot-toast";
 
 export default function ProfilePage() {
     const router = useRouter();
-    const { data: session, isPending, refetch } = useSession();
+    const { data: session, isPending } = useSession();
 
-    const [name, setName] = useState("");
-    const [saving, setSaving] = useState(false);
     const [signingOut, setSigningOut] = useState(false);
 
     const user = session?.user;
@@ -21,49 +19,6 @@ export default function ProfilePage() {
             router.replace("/sign-in");
         }
     }, [isPending, user, router]);
-
-    useEffect(() => {
-        if (user?.name) {
-            setName(user.name);
-        }
-    }, [user?.name]);
-
-    async function handleUpdate(e) {
-        e.preventDefault();
-
-        const updatedName = name.trim();
-
-        if (!updatedName) {
-            toast.error("আপনার নাম লিখুন");
-            return;
-        }
-
-        if (updatedName === user?.name) {
-            toast.error("নাম পরিবর্তন করা হয়নি");
-            return;
-        }
-
-        setSaving(true);
-
-        try {
-            const { error } = await authClient.updateUser({
-                name: updatedName,
-            });
-
-            if (error) {
-                toast.error(error.message || "নাম আপডেট করা যায়নি");
-                return;
-            }
-
-            await refetch();
-            toast.success("নাম সফলভাবে আপডেট হয়েছে");
-        } catch (error) {
-            console.error(error);
-            toast.error("কিছু একটা সমস্যা হয়েছে");
-        } finally {
-            setSaving(false);
-        }
-    }
 
     async function handleSignOut() {
         setSigningOut(true);
@@ -102,7 +57,6 @@ export default function ProfilePage() {
     return (
         <section className="min-h-screen bg-[#f2f7f3] px-4 py-10 sm:px-6">
             <div className="mx-auto max-w-6xl">
-
                 <div className="mx-auto mb-6 max-w-2xl">
                     <h1 className="text-2xl font-bold text-[#24342A]">
                         আমার প্রোফাইল
@@ -114,10 +68,8 @@ export default function ProfilePage() {
                 </div>
 
                 <div className="mx-auto max-w-2xl space-y-5">
-
                     <div className="rounded-2xl border border-gray-200 bg-white p-5">
                         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-
                             <div className="flex items-center gap-4">
                                 <div className="flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-green-100">
                                     {user.image ? (
@@ -155,46 +107,26 @@ export default function ProfilePage() {
                             >
                                 {signingOut ? "সাইন আউট হচ্ছে..." : "↪ সাইন আউট"}
                             </button>
-
                         </div>
                     </div>
 
                     <div className="rounded-2xl border border-gray-200 bg-white p-5 sm:p-6">
-                        <h2 className="mb-6 text-lg font-bold text-[#24342A]">
-                        আপডেট
+                        <h2 className="mb-2 text-lg font-bold text-[#24342A]">
+                            প্রোফাইল আপডেট
                         </h2>
 
-                        <form onSubmit={handleUpdate} className="space-y-4">
-                            <div>
-                                <label
-                                    htmlFor="profile-name"
-                                    className="mb-2 block text-sm font-medium text-gray-700"
-                                >
-                                    নাম
-                                </label>
+                        <p className="mb-5 text-sm text-gray-500">
+                            আপনার নাম পরিবর্তন করতে নিচের বাটনে ক্লিক করুন।
+                        </p>
 
-                                <input
-                                    id="profile-name"
-                                    type="text"
-                                    value={name}
-                                    onChange={(e) => setName(e.target.value)}
-                                    maxLength={100}
-                                    required
-                                    placeholder="আপনার নাম লিখুন"
-                                    className="h-11 w-full rounded-lg border border-gray-200 bg-white px-4 text-sm text-gray-900 outline-none transition focus:border-green-600 focus:ring-2 focus:ring-green-100"
-                                />
-                            </div>
-
-                            <button
-                                type="submit"
-                                disabled={saving}
-                                className="w-full rounded-lg bg-green-700 px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-green-800 disabled:opacity-50"
-                            >
-                                {saving ? "আপডেট হচ্ছে..." : "আপডেট"}
-                            </button>
-                        </form>
+                        <button
+                            type="button"
+                            onClick={() => router.push("/profile/update")}
+                            className="w-full rounded-lg bg-green-700 px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-green-800"
+                        >
+                            প্রোফাইল আপডেট করুন →
+                        </button>
                     </div>
-
                 </div>
             </div>
         </section>
