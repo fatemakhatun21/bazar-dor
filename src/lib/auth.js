@@ -6,6 +6,13 @@ const client = new MongoClient(process.env.BETTER_AUTH_DB_URL);
 const db = client.db("better-auth-db");
 
 export const auth = betterAuth({
+  trustedOrigins: [
+    "https://bazar-dor-fatema8.vercel.app",
+    ...(process.env.NODE_ENV === "development"
+      ? ["http://localhost:3000"]
+      : []),
+  ],
+
   emailAndPassword: {
     enabled: true,
   },
